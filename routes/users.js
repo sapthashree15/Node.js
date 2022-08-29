@@ -1,4 +1,4 @@
-import express from "express";
+const express = require('express');
 
 const router = express.Router();
 
@@ -24,6 +24,19 @@ let users = [
 
 ];
 
+// router.get("/email", (req, res) => {
+//     const  email = req.query.email;
+  
+//     const foundUser = users.find((user) => user.email == email);
+  
+//     res.send(foundUser);
+//   });
+
+router.get("/:email",(req,res)=>{
+    console.log(req.params);
+    res.send("Hello "+req.params.email)
+})  
+
 
 router.get("/",(req,res)=>{
     res.send(users);
@@ -36,6 +49,4 @@ router.post("/new/",(req,res)=>{
 })
 
 
-
-
-export default router;
+module.exports=router;
