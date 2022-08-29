@@ -26,9 +26,14 @@ let users = [
 
 
 router.get("/:email",(req,res)=>{
-    console.log(req.params);
-    res.send("Hello "+ " " + req.params.email)
+
+    const email = req.params.email;
+  
+    let filtered_users = users.filter((user) => user.email === email);
+    res.send(filtered_users);
+    
 })  
+
 
 
 router.get("/",(req,res)=>{
@@ -41,21 +46,34 @@ router.post("/new/",(req,res)=>{
     res.send("The user" + (' ')+ (req.query.firstName) + " Has been added!")
 });
 
+
 router.put("/:email", (req, res) => {
-
     const email = req.params.email;
-    const firstName = req.params.firstName;
-    const lastName = req.params.lasstName;
-    const DOB = req.params.DOB;
 
+    let filtered_users = users.filter((user) => user.email === email);
+
+    if (filtered_users.length > 0) {
+        let filtered_user = filtered_users[0];
+        console.log(typeof req.params);
+        console.log(req.params);
+        let filtered_params = JSON.parse(req.params);
+        
+        // console.log(req.params.keys);
+        Object.keys(filtered_params).forEach(param => {
+            filtered_user(param)=req.params(param);
+        });
+    
+
+        users = users.filter((user) => user.email != email);
+        users.add(filtered_user);
   
-    const user = users.find((user) => user.email == email);
-  
-    if (firstName) user.firstName = firstName;
-    if (lastName) user.lastName = lastName;
-    if (DOB) user.DOB = DOB;
-  
-    res.send("The user" + (' ')+ (req.params.email) + " Has been updated!")
+        res.send(`User with the email  ${email} deleted.`);
+    }
+
+    else{
+        res.send("Unable to find user!");
+    }
+
   });
 
 
