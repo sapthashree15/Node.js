@@ -34,7 +34,7 @@ let users = [
 
 router.get("/:email",(req,res)=>{
     console.log(req.params);
-    res.send("Hello "+req.params.email)
+    res.send("Hello "+ " " + req.params.email)
 })  
 
 
@@ -45,8 +45,34 @@ router.get("/",(req,res)=>{
 
 router.post("/new/",(req,res)=>{
     users.push({"firstName":req.query.firstName,"lastName":req.query.lastName,"email":req.query.email,"DOB":req.query.DOB});
-    res.send(req.query.firstName + " Has been added!")
-})
+    res.send("The user" + (' ')+ (req.query.firstName) + " Has been added!")
+});
+
+router.put("/:email", (req, res) => {
+
+    const email = req.params.email;
+    const firstName = req.params.firstName;
+    const lastName = req.params.lasstName;
+    const DOB = req.params.DOB;
+
+  
+    const user = users.find((user) => user.email == email);
+  
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (DOB) user.DOB = DOB;
+  
+    res.send("The user" + (' ')+ (req.params.email) + " Has been updated!")
+  });
+
+
+router.delete("/:email", (req, res) => {
+    const email = req.params.email;
+  
+    users = users.filter((user) => user.email != email);
+  
+    res.send(`User with the email  ${email} deleted.`);
+  });
 
 
 module.exports=router;
